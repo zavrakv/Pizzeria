@@ -12,8 +12,15 @@
       {
         state: 'main',
         config: {
-          url: '/main',
-          templateUrl: 'main/main-list.html'
+          url: '/',
+          component: 'mainComponent',
+          resolve: {
+            pizzas: function (MainFactory) {
+              return MainFactory.getPizzas().then(function (res) {
+                return res;
+              });
+            }
+          }
         }
       }
     ];

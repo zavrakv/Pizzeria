@@ -1,8 +1,18 @@
 (function () {
   
 	angular.module('app.core', [
-		'blocks.router',
-		'ui.router'
+    /*
+     * Angular modules
+     */
+    'ngAnimate',
+    /*
+     * Our reusable cross app code modules
+     */
+    'blocks.router',
+    /*
+     * 3rd Party modules
+     */
+    'ui.router'
 	]);
   
 })();

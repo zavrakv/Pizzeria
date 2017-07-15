@@ -1,13 +1,17 @@
 (function () {
   'use strict';
   
-  menuController.$inject = ['$state', '$rootScope'];
+  menuController.$inject = ['$state', '$scope', '$rootScope'];
   
-  function menuController($state, $rootScope) {
+  function menuController($state, $scope, $rootScope) {
     var vm = this;
     
-    $rootScope.$on('$viewContentLoading', function (event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$viewContentLoading', function () {
       vm.currentPage = $state.current.name;
+    });
+  
+    $scope.$on('item:added', function(event, totalPrice) {
+      vm.totalPrice = totalPrice
     });
     
     vm.menuItems = [{
