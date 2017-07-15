@@ -78,6 +78,8 @@ module.exports = function(grunt) {
 				src: [
 					'bower_components/angular/angular.min.js',
 					'bower_components/angular-ui-router/release/angular-ui-router.min.js',
+					'bower_components/angular-animate/angular-animate.min.js',
+					'bower_components/angular-toastr/dist/angular-toastr.min.js',
 					'bower_components/jquery/dist/jquery.min.js',
 					'bower_components/bootstrap/dist/js/bootstrap.min.js'
 				],
@@ -87,10 +89,34 @@ module.exports = function(grunt) {
 				src: [
 					'bower_components/bootstrap/dist/css/bootstrap.min.css',
 					'bower_components/bootstrap/dist/css/bootstrap-theme.min.css',
+          'bower_components/angular-toastr/dist/angular-toastr.min.css'
 				],
 				dest: 'public/css/vendor.css'
 			}
 		},
+    
+    less: {
+      dev: {
+        options: {
+          paths: ['src/app/main.less']
+        },
+        files: {
+          'public/css/main.css': 'src/app/main.less'
+        }
+      },
+      prod: {
+        options: {
+          paths: ['assets/css'],
+          // plugins: [
+          //   new (require('less-plugin-autoprefix'))({browsers: ["last 2 versions"]}),
+          //   new (require('less-plugin-clean-css'))(cleanCssOptions)
+          // ],
+        },
+        files: {
+          'public/css/main.css': 'src/app/main.less'
+        }
+      }
+    },
   
 		uglify: {
 			dist: {
@@ -121,8 +147,8 @@ module.exports = function(grunt) {
   
 		watch: {
 			dev: {
-				files: [ 'Gruntfile.js', 'src/**/*.js', 'src/**/*.html' ],
-				tasks: [ 'html2js:dist', 'concat:dist', 'concat:vendor', 'concat:css', 'clean:temp', 'copy:main' ],
+				files: [ 'Gruntfile.js', 'src/**/*.js', 'src/**/*.html', 'src/**/*.less' ],
+				tasks: [ 'html2js:dist', 'concat:dist', 'concat:vendor', 'concat:css', 'less:dev', 'clean:temp', 'copy:main' ],
 				options: {
 					atBegin: true
 				}
@@ -149,6 +175,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-browser-sync');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-less');
   
 	// Build tasks.
 	grunt.registerTask('dev', [ 'bower', 'browserSync', 'watch:dev' ]);
