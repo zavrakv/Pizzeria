@@ -1,9 +1,9 @@
 (function () {
 	'use strict';
 
-	mainController.$inject = ['$filter', '$rootScope'];
+	mainController.$inject = ['$filter', '$rootScope', 'CartService'];
 
-	function mainController($filter, $rootScope) {
+	function mainController($filter, $rootScope, CartService) {
 		var vm = this;
 
 		vm.addToCart = addToCart;
@@ -11,10 +11,10 @@
 		
     
 		vm.addedPizzas = [];
-		vm.sort = null;
+		vm.sortDirection = null;
 		vm.totalPrice = null;
 		
-    /* TODO: refactor this function */
+		
 		function addToCart(pizza, $index) {
       
       pizza.inCart ?
@@ -22,19 +22,13 @@
         pizza.inCart = true;
       
       if (pizza.inCart) {
-        vm.addedPizzas.push(pizza);
+        vm.addedPizzas = CartService.addToCart(pizza);
       } else {
-        for (var i = 0; i < vm.addedPizzas.length; i++) {
-          if (pizza.id === vm.addedPizzas[i].id) {
-            vm.addedPizzas.splice(i, 1);
-          }
-        }
+        vm.addedPizzas = CartService.removeFromCart(pizza.id)
       }
       
       showStatusText(pizza.inCart, $index);
-      vm.totalPrice = countPrice(vm.addedPizzas);
-      
-      $rootScope.$broadcast("item:added", vm.totalPrice);
+      $rootScope.$broadcast("item:added");
     }
     
     function showStatusText(status, id) {
@@ -45,15 +39,15 @@
       }
     }
     
-    function orderBy(type) {
-      vm.sort === null || vm.sort === 'DESC' ?
-        vm.sort = 'ASC' :
-        vm.sort = 'DESC';
-      
-      sort(vm.pizzas, vm.sort, type)
+    function getSortDirection() {
+      vm.sortDirection === null || vm.sortDirection === 'DESC' ?
+        vm.sortDirection = 'ASC' :
+        vm.sortDirection = 'DESC';
     }
     
-    function sort(collection, mod, type) {
+    function orderBy(collection, mod, type) {
+      getSortDirection();
+      
       if (mod === 'ASC') {
         vm.pizzas = $filter('orderBy')(collection, type);
       } else if (mod === 'DESC') {
@@ -61,13 +55,6 @@
       }
     }
     
-    function countPrice(pizzas) {
-		  var price = 0;
-      for (var i = 0; i < pizzas.length; i ++) {
-        price += pizzas[i].price;
-      }
-      return price;
-    }
   }
   
   angular

@@ -1,17 +1,17 @@
 (function () {
   'use strict';
   
-  menuController.$inject = ['$state', '$scope', '$rootScope'];
+  menuController.$inject = ['$state', '$scope', '$rootScope', 'CartService'];
   
-  function menuController($state, $scope, $rootScope) {
+  function menuController($state, $scope, $rootScope, CartService) {
     var vm = this;
     
     $rootScope.$on('$viewContentLoading', function () {
       vm.currentPage = $state.current.name;
     });
   
-    $scope.$on('item:added', function(event, totalPrice) {
-      vm.totalPrice = totalPrice
+    $scope.$on('item:added', function() {
+      vm.totalPrice = CartService.countPrice();
     });
     
     vm.menuItems = [{
