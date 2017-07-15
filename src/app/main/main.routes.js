@@ -12,14 +12,8 @@
       {
         state: 'main',
         config: {
-          url: '/',
+          url: '/main',
           templateUrl: 'main/hz.html'
-        }
-      }, {
-        state: 'mainpage',
-        config: {
-          url: '/mainpage',
-          templateUrl: 'main/mainpage.html'
         }
       }
     ];

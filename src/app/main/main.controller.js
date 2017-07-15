@@ -1,10 +1,6 @@
 (function () {
 	'use strict';
 
-	// angular
-	// 	.module('app.main')
-	// 	.controller('mainController', mainController);
-
 	mainController.$inject = ['$state'];
 
 	function mainController($state) {
