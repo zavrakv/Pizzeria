@@ -13,7 +13,7 @@
         state: 'main',
         config: {
           url: '/main',
-          templateUrl: 'main/hz.html'
+          templateUrl: 'main/main-list.html'
         }
       }
     ];

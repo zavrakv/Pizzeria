@@ -5,7 +5,8 @@
     .module('app', [
       'app.core',
       'templates-dist',
-      'app.main'
+      'app.main',
+      'app.menu'
     ]);
 
 })();

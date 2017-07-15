@@ -71,22 +71,31 @@ module.exports = function(grunt) {
 					'src/**/*.module.js',
 					'src/**/*.js'
 				],
-				dest: 'public/app.js'
+				dest: 'public/js/app.js'
 			},
 			vendor: {
 				src: [
 					'bower_components/angular/angular.min.js',
-					'bower_components/angular-ui-router/release/angular-ui-router.min.js'
+					'bower_components/angular-ui-router/release/angular-ui-router.min.js',
+					'bower_components/jquery/dist/jquery.min.js',
+					'bower_components/bootstrap/dist/js/bootstrap.min.js'
 				],
-				dest: 'public/vendor.js'
+				dest: 'public/js/vendor.js'
+			},
+			css: {
+				src: [
+					'bower_components/bootstrap/dist/css/bootstrap.min.css',
+					'bower_components/bootstrap/dist/css/bootstrap-theme.min.css',
+				],
+				dest: 'public/css/vendor.css'
 			}
 		},
   
 		uglify: {
 			dist: {
 				files: {
-					'public/app.js': ['public/app.js'],
-					'public/vendor.js': ['public/vendor.js']
+					'public/js/app.js': ['public/js/app.js'],
+					'public/js/vendor.js': ['public/js/vendor.js']
 				},
 				options: {
 					/*Or use $inject instead*/
@@ -100,11 +109,19 @@ module.exports = function(grunt) {
 				src: [ 'tmp' ]
 			}
 		},
+    
+    copy: {
+      main: {
+        files: [
+          {expand: true, cwd: 'src/', src: ['fonts/**'], dest: 'public/'}
+        ]
+      }
+    },
   
 		watch: {
 			dev: {
-				files: [ 'Gruntfile.js', 'src/**/*.js', '*.html' ],
-				tasks: [ 'html2js:dist', 'concat:dist', 'concat:vendor', 'clean:temp' ],
+				files: [ 'Gruntfile.js', 'src/**/*.js', 'src/**/*.html' ],
+				tasks: [ 'html2js:dist', 'concat:dist', 'concat:vendor', 'concat:css', 'clean:temp', 'copy:main' ],
 				options: {
 					atBegin: true
 				}
@@ -116,7 +133,7 @@ module.exports = function(grunt) {
 					atBegin: true
 				}
 			}
-		},
+		}
 		
 	});
   
@@ -130,6 +147,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-bower-task');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-browser-sync');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   
 	// Build tasks.
 	grunt.registerTask('dev', [ 'bower', 'browserSync', 'watch:dev' ]);
