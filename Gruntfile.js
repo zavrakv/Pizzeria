@@ -15,13 +15,14 @@ module.exports = function(grunt) {
 					]
 				},
 				options: {
-					watchTask: true,
-					server: {
-						baseDir: './public',
-						middleware: [
-							historyFallback()
-						]
-					}
+          proxy: "localhost:8001",
+					watchTask: true
+					// server: {
+					// 	baseDir: './public',
+					// 	middleware: [
+					// 		historyFallback()
+					// 	]
+					// }
 				}
 			}
 		},
@@ -68,8 +69,8 @@ module.exports = function(grunt) {
 			dist: {
 				src: [
 					'tmp/*.js',
-					'src/**/*.module.js',
-					'src/**/*.js'
+					'src/app/**/*.module.js',
+					'src/app/**/*.js'
 				],
 				dest: 'public/js/app.js'
 			},
