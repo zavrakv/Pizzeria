@@ -1,23 +1,25 @@
 <div class="container">
     <button class="btn btn-primary sort-btn" ng-click="vm.orderBy(vm.pizzas, vm.sortDirection, 'name')">Order by Name</button>
     <button class="btn btn-primary sort-btn" ng-click="vm.orderBy(vm.pizzas, vm.sortDirection, 'price')">Order by Price</button>
-    <div class="row">
+    <div class="row flex-row">
         <div class="col-lg-3" ng-repeat="pizza in vm.pizzas">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h2 class="panel-title text-capitalize">{{ pizza.name }}</h2>
                 </div>
                 <div class="panel-body">
-                    <p>
-                        {{ pizza.ingredients.join(', ') }}
-                    </p>
+                    <figure>
+                        <img src="{{pizza.img}}" alt="pizza" class="img-responsive">
+                        <figcaption>
+                            {{ pizza.ingredients.join(', ') }}
+                        </figcaption>
+                    </figure>
                 </div>
                 <div class="panel-footer">
                     <span class="cost">{{ pizza.price | currency }}</span>
                     <button type="button"
                             class="btn btn-primary add-to-cart"
-                            ng-click="vm.addToCart(pizza, $index)"
-                            ng-init="pizza.status = 'Add to cart'">
+                            ng-click="vm.addToCart(pizza, pizza.id)">
                         <span>{{ pizza.status }}</span>
                         <i class="fa fa-shopping-cart"></i>
                     </button>

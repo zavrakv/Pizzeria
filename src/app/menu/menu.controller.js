@@ -10,7 +10,7 @@
       vm.currentPage = $state.current.name;
     });
   
-    $scope.$on('item:added', function() {
+    $scope.$on('cart:changed', function() {
       vm.totalPrice = CartService.countPrice();
     });
     

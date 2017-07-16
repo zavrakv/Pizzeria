@@ -15,10 +15,22 @@
           url: '/',
           component: 'mainComponent',
           resolve: {
-            pizzas: function (MainFactory) {
-              return MainFactory.getPizzas().then(function (res) {
-                return res;
-              });
+            pizzas: function (CartService, MainFactory) {
+              if (!CartService.getItems().length) {
+                var pizzas = [];
+                return MainFactory.getPizzas().then(function (res) {
+                  console.log(res);
+                  pizzas = res;
+                }).then(function () {
+                  CartService.setItems(pizzas);
+                  return CartService.getItems();
+                });
+              } else {
+                return CartService.getItems();
+              }
+            },
+            addedPizzas: function (CartService) {
+              return CartService.getCartOrder();
             }
           }
         }

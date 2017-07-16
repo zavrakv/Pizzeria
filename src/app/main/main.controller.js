@@ -9,31 +9,24 @@
 		vm.addToCart = addToCart;
 		vm.orderBy = orderBy;
 		
-    
-		vm.addedPizzas = [];
 		vm.sortDirection = null;
 		vm.totalPrice = null;
 		
 		
 		function addToCart(pizza, $index) {
-    
-		  var actionType = null;
       
       if (pizza.inCart) {
         pizza.inCart = false;
         vm.addedPizzas = CartService.removeFromCart(pizza.id);
-        actionType = 'remove';
       } else {
         pizza.inCart = true;
         vm.addedPizzas = CartService.addToCart(pizza);
-        actionType = 'add';
       }
       
-      $rootScope.$broadcast("item:added");
+      $rootScope.$broadcast("cart:changed");
       showStatusText(pizza.inCart, $index);
-      showToastText(pizza.inCart, pizza.name);
-      showCartToast(vm.toastText, actionType)
-      
+      toastText(pizza.inCart, pizza.name);
+      showCartToast(vm.toastText, pizza.toastType)
     }
     
     function showCartToast(message, type) {
@@ -47,17 +40,15 @@
     }
     
     function showStatusText(status, id) {
-      if (status) {
-        vm.pizzas[id].status = 'Remove from cart';
-      } else {
-        vm.pizzas[id].status = 'Add to cart';
-      }
+      vm.pizzas = CartService.changeItemStatus(status, id);
     }
     
-    function showToastText(inCart, item) {
-      inCart ?
-        vm.toastText = 'Item ' + item + ' added to cart!' :
-        vm.toastText = 'Item  ' + item + ' removed from cart!'
+    function toastText(inCart, item) {
+		  if (inCart) {
+        vm.toastText = 'Item ' + item + ' added to cart!';
+      } else {
+        vm.toastText = 'Item  ' + item + ' removed from cart!';
+      }
     }
     
     function getSortDirection() {
@@ -85,7 +76,8 @@
 			controller: mainController,
 			controllerAs: 'vm',
       bindings: {
-        pizzas: '<'
+        pizzas: '<',
+        addedPizzas: '<'
       }
     })
 })();

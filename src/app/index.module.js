@@ -5,8 +5,9 @@
     .module('app', [
       'app.core',
       'templates-dist',
-      'app.cart',
       'app.main',
+      'app.cart',
+      'app.history',
       'app.menu'
     ]);
 
