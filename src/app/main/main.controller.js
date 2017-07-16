@@ -1,9 +1,9 @@
 (function () {
 	'use strict';
 
-	mainController.$inject = ['$filter', '$rootScope', 'CartService'];
+	mainController.$inject = ['$filter', '$rootScope', 'CartService', '$mdToast'];
 
-	function mainController($filter, $rootScope, CartService) {
+	function mainController($filter, $rootScope, CartService, $mdToast) {
 		var vm = this;
 
 		vm.addToCart = addToCart;
@@ -16,27 +16,48 @@
 		
 		
 		function addToCart(pizza, $index) {
-      
-      pizza.inCart ?
-        pizza.inCart = false :
-        pizza.inCart = true;
+    
+		  var actionType = null;
       
       if (pizza.inCart) {
-        vm.addedPizzas = CartService.addToCart(pizza);
+        pizza.inCart = false;
+        vm.addedPizzas = CartService.removeFromCart(pizza.id);
+        actionType = 'remove';
       } else {
-        vm.addedPizzas = CartService.removeFromCart(pizza.id)
+        pizza.inCart = true;
+        vm.addedPizzas = CartService.addToCart(pizza);
+        actionType = 'add';
       }
       
-      showStatusText(pizza.inCart, $index);
       $rootScope.$broadcast("item:added");
+      showStatusText(pizza.inCart, $index);
+      showToastText(pizza.inCart, pizza.name);
+      showCartToast(vm.toastText, actionType)
+      
+    }
+    
+    function showCartToast(message, type) {
+      $mdToast.show(
+        $mdToast.simple()
+          .content(message)
+          .hideDelay(2000)
+          .position('bottom right')
+          .theme(type + "-toast")
+      );
     }
     
     function showStatusText(status, id) {
       if (status) {
-        vm.pizzas[id].status = 'Remove from cart'
+        vm.pizzas[id].status = 'Remove from cart';
       } else {
-        vm.pizzas[id].status = 'Add to cart'
+        vm.pizzas[id].status = 'Add to cart';
       }
+    }
+    
+    function showToastText(inCart, item) {
+      inCart ?
+        vm.toastText = 'Item ' + item + ' added to cart!' :
+        vm.toastText = 'Item  ' + item + ' removed from cart!'
     }
     
     function getSortDirection() {

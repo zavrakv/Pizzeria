@@ -79,7 +79,9 @@ module.exports = function(grunt) {
 					'bower_components/angular/angular.min.js',
 					'bower_components/angular-ui-router/release/angular-ui-router.min.js',
 					'bower_components/angular-animate/angular-animate.min.js',
-					'bower_components/angular-toastr/dist/angular-toastr.min.js',
+					'bower_components/angular-aria/angular-aria.min.js',
+					'bower_components/angular-messages/angular-messages.min.js',
+					'bower_components/angular-material/angular-material.min.js',
 					'bower_components/jquery/dist/jquery.min.js',
 					'bower_components/bootstrap/dist/js/bootstrap.min.js'
 				],
@@ -89,7 +91,7 @@ module.exports = function(grunt) {
 				src: [
 					'bower_components/bootstrap/dist/css/bootstrap.min.css',
 					'bower_components/bootstrap/dist/css/bootstrap-theme.min.css',
-          'bower_components/angular-toastr/dist/angular-toastr.min.css'
+					'bower_components/angular-material/angular-material.min.css'
 				],
 				dest: 'public/css/vendor.css'
 			}

@@ -4,7 +4,7 @@
     /*
      * Angular modules
      */
-    'ngAnimate',
+    'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial',
     /*
      * Our reusable cross app code modules
      */
