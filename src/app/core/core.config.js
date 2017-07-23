@@ -12,5 +12,8 @@
     
     $mdThemingProvider
       .theme("remove-toast");
+  
+    // This removes md-theme-style tags from head section
+    $mdThemingProvider.generateThemesOnDemand(true);
   }
 })();
