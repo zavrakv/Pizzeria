@@ -1,6 +1,4 @@
 module.exports = function(grunt) {
-  /*TODO: finish refactoring*/
-	var historyFallback = require('connect-history-api-fallback');
   
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -47,7 +45,8 @@ module.exports = function(grunt) {
   
 		concat: {
 			options: {
-				separator: ';'
+				separator: ';',
+        sourceMap: true
 			},
 			dist: {
 				src: [
@@ -55,7 +54,7 @@ module.exports = function(grunt) {
 					'src/app/**/*.module.js',
 					'src/app/**/*.js'
 				],
-				dest: 'public/js/app.js'
+				dest: 'public/js/app.min.js'
 			},
 			vendor: {
 				src: [
@@ -68,7 +67,7 @@ module.exports = function(grunt) {
 					'bower_components/jquery/dist/jquery.min.js',
 					'bower_components/bootstrap/dist/js/bootstrap.min.js'
 				],
-				dest: 'public/js/vendor.js'
+				dest: 'public/js/vendor.min.js'
 			},
 			css: {
 				src: [
@@ -83,6 +82,11 @@ module.exports = function(grunt) {
     less: {
       dev: {
         options: {
+          sourceMap: true,
+          sourceMapFilename: 'public/css/main.css.map',
+          sourceMapURL: '/css/main.css.map',
+          sourceMapBasepath: 'public',
+          sourceMapRootpath: '/',
           paths: ['src/app/main.less']
         },
         files: {
@@ -91,11 +95,11 @@ module.exports = function(grunt) {
       },
       prod: {
         options: {
-          paths: ['assets/css'],
-          // plugins: [
-          //   new (require('less-plugin-autoprefix'))({browsers: ["last 2 versions"]}),
-          //   new (require('less-plugin-clean-css'))(cleanCssOptions)
-          // ],
+          paths: ['src/app/main.less'],
+          plugins: [
+            new (require('less-plugin-autoprefix'))({browsers: ["last 2 versions"]}),
+            new (require('less-plugin-clean-css'))
+          ]
         },
         files: {
           'public/css/main.css': 'src/app/main.less'
@@ -106,12 +110,15 @@ module.exports = function(grunt) {
 		uglify: {
 			dist: {
 				files: {
-					'public/js/app.js': ['public/js/app.js'],
-					'public/js/vendor.js': ['public/js/vendor.js']
+					'public/js/app.min.js': ['public/js/app.min.js'],
+					'public/js/vendor.min.js': ['public/js/vendor.min.js']
 				},
 				options: {
 					/*Or use $inject instead*/
-					mangle: false
+          mangle: false,
+          sourceMap : true,
+          sourceMapIncludeSources : true,
+          sourceMapIn : 'public/js/app.min.js.map'
 				}
 			}
 		},
@@ -152,7 +159,6 @@ module.exports = function(grunt) {
 	// Load the plugin that provides the task.
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-contrib-compress');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-html2js');
 	grunt.loadNpmTasks('grunt-contrib-watch');
@@ -164,6 +170,6 @@ module.exports = function(grunt) {
 	// Build tasks.
 	grunt.registerTask('dev', [ 'browserSync', 'watch:dev' ]);
 	grunt.registerTask('test', [ 'karma:continuous' ]);
-	grunt.registerTask('minified', [ 'connect:server', 'watch:min' ]);
+	grunt.registerTask('minified', [ 'browserSync', 'watch:min' ]);
   
 };
