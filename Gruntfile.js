@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 			unit: {
 				singleRun: true
 			},
-    
+   
 			continuous: {
 				singleRun: false,
 				autoWatch: true
@@ -52,7 +52,8 @@ module.exports = function(grunt) {
 				src: [
 					'tmp/*.js',
 					'src/app/**/*.module.js',
-					'src/app/**/*.js'
+					'src/app/**/*.js',
+					'!src/app/**/*.spec.js'
 				],
 				dest: 'public/js/app.min.js'
 			},
