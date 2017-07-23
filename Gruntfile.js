@@ -20,17 +20,6 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-    
-		bower: {
-			install: {
-				options: {
-					install: true,
-					copy: false,
-					targetDir: './libs',
-					cleanTargetDir: true
-				}
-			}
-		},
   
 		karma: {
 			options: {
@@ -167,15 +156,14 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-html2js');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-bower-task');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-browser-sync');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-less');
   
 	// Build tasks.
-	grunt.registerTask('dev', [ 'bower', 'browserSync', 'watch:dev' ]);
-	grunt.registerTask('test', [ 'bower', 'karma:continuous' ]);
-	grunt.registerTask('minified', [ 'bower', 'connect:server', 'watch:min' ]);
+	grunt.registerTask('dev', [ 'browserSync', 'watch:dev' ]);
+	grunt.registerTask('test', [ 'karma:continuous' ]);
+	grunt.registerTask('minified', [ 'connect:server', 'watch:min' ]);
   
 };
