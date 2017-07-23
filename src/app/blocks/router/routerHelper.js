@@ -1,24 +1,19 @@
 /* Help configure the state-base ui.router */
 (function() {
 	'use strict';
-  /*TODO: refactor*/
+	
 	angular
 		.module('blocks.router')
 		.provider('routerHelper', routerHelperProvider);
   
 	routerHelperProvider.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider'];
-	/* @ngInject */
+
 	function routerHelperProvider($locationProvider, $stateProvider, $urlRouterProvider) {
-		/* jshint validthis:true */
+
 		var config = {
-			docTitle: undefined,
 			resolveAlways: {}
 		};
-    
-		if (!(window.history && window.history.pushState)) {
-			window.location.hash = '/';
-		}
-    
+		
 		$locationProvider.html5Mode(true);
     
 		this.configure = function(cfg) {
@@ -26,27 +21,15 @@
 		};
     
 		this.$get = RouterHelper;
-		RouterHelper.$inject = ['$location', '$rootScope', '$state'];
-		/* @ngInject */
-		function RouterHelper($location, $rootScope, $state) {
-			var handlingStateChangeError = false;
+		RouterHelper.$inject = ['$state'];
+
+		function RouterHelper($state) {
 			var hasOtherwise = false;
-			var stateCounts = {
-				errors: 0,
-				changes: 0
-			};
-      
-			var service = {
+			
+			return {
 				configureStates: configureStates,
-				getStates: getStates,
-				stateCounts: stateCounts
+				getStates: getStates
 			};
-      
-			init();
-      
-			return service;
-      
-			///////////////
       
 			function configureStates(states, otherwisePath) {
 				states.forEach(function(state) {
@@ -60,44 +43,8 @@
 				}
 			}
       
-			function handleRoutingErrors() {
-				// Route cancellation:
-				// On routing error, go to the dashboard.
-				// Provide an exit clause if it tries to do it twice.
-				$rootScope.$on('$stateChangeError',
-					function(event, toState, toParams, fromState, fromParams, error) {
-						if (handlingStateChangeError) {
-							return;
-						}
-						stateCounts.errors++;
-						handlingStateChangeError = true;
-						var destination = (toState &&
-														(toState.title || toState.name || toState.loadedTemplateUrl)) ||
-														'unknown target';
-						var msg = 'Error routing to ' + destination + '. ' +
-														(error.data || '') + '. <br/>' + (error.statusText || '') +
-														': ' + (error.status || '');
-						$location.path('/');
-					}
-				);
-			}
-      
-			function init() {
-				handleRoutingErrors();
-				updateDocTitle();
-			}
-      
-			function getStates() { return $state.get(); }
-      
-			function updateDocTitle() {
-				$rootScope.$on('$stateChangeSuccess',
-					function(event, toState, toParams, fromState, fromParams) {
-						stateCounts.changes++;
-						handlingStateChangeError = false;
-						var title = config.docTitle + ' ' + (toState.title || '');
-						$rootScope.title = title; // data bind to <title>
-					}
-				);
+			function getStates() {
+				return $state.get();
 			}
 		}
 	}
