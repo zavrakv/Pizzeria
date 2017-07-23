@@ -1,6 +1,6 @@
 <div class="container">
-    <button class="btn btn-primary sort-btn" ng-click="vm.orderBy(vm.pizzas, vm.sortDirection, 'name')">Order by Name</button>
-    <button class="btn btn-primary sort-btn" ng-click="vm.orderBy(vm.pizzas, vm.sortDirection, 'price')">Order by Price</button>
+    <button class="btn btn-primary sort-btn" ng-click="vm.orderBy(vm.pizzas, 'name')">Order by Name</button>
+    <button class="btn btn-primary sort-btn" ng-click="vm.orderBy(vm.pizzas, 'price')">Order by Price</button>
     <div class="row flex-row">
         <div class="col-lg-3" ng-repeat="pizza in vm.pizzas">
             <div class="panel panel-primary">

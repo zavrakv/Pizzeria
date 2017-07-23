@@ -57,12 +57,12 @@
         vm.sortDirection = 'DESC';
     }
     
-    function orderBy(collection, mod, type) {
+    function orderBy(collection, type) {
       getSortDirection();
       
-      if (mod === 'ASC') {
+      if (vm.sortDirection === 'ASC') {
         vm.pizzas = $filter('orderBy')(collection, type);
-      } else if (mod === 'DESC') {
+      } else if (vm.sortDirection === 'DESC') {
         vm.pizzas = $filter('orderBy')(collection, '-' + type);
       }
     }
